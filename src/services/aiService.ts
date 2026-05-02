@@ -1,7 +1,13 @@
 import { GoogleGenAI, Type } from "@google/genai";
 import { Question, UserPreferences } from "../types";
 
-const ai = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY });
+const key = process.env.GEMINI_API_KEY;
+
+if (!key || key === 'MY_GEMINI_API_KEY') {
+  console.warn("⚠️ AI SERVICE WARNING: Gemini API Key is missing or using placeholder. Falling back to general trivia.");
+}
+
+const ai = new GoogleGenAI({ apiKey: key || '' });
 
 export async function generateBangladeshQuestions(preferences?: UserPreferences): Promise<Question[]> {
   const difficulty = preferences?.difficulty || 'medium';
@@ -23,10 +29,9 @@ export async function generateBangladeshQuestions(preferences?: UserPreferences)
   }`;
 
   try {
-    const response = await ai.models.generateContent({
-      model: "gemini-3-flash-preview",
-      contents: prompt,
-      config: {
+    const response = await ai.getGenerativeModel({
+      model: "gemini-1.5-flash",
+      generationConfig: {
         responseMimeType: "application/json",
         responseSchema: {
           type: Type.ARRAY,
@@ -46,9 +51,9 @@ export async function generateBangladeshQuestions(preferences?: UserPreferences)
           }
         }
       }
-    });
+    }).generateContent(prompt);
 
-    const questions = JSON.parse(response.text);
+    const questions = JSON.parse(response.response.text());
     return questions.map((q: any) => ({
       ...q,
       difficulty: q.difficulty.toLowerCase() as 'easy' | 'medium' | 'hard'
