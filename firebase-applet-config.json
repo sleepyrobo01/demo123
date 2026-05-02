@@ -1,10 +1,10 @@
 {
-  "projectId": "remixed-project-id",
-  "appId": "remixed-app-id",
-  "apiKey": "remixed-api-key",
-  "authDomain": "remixed-auth-domain",
-  "firestoreDatabaseId": "remixed-firestore-database-id",
-  "storageBucket": "remixed-storage-bucket",
-  "messagingSenderId": "remixed-messaging-sender-id",
-  "measurementId": "remixed-measurement-id"
+  "projectId": "trivia-8ecc1",
+  "appId": "1:128897498885:web:bdfc2aaad6d312a490c16c",
+  "apiKey": "AIzaSyBnBWaWSlI9DQArmLrxXHHjzir8TWcLngU",
+  "authDomain": "trivia-8ecc1.firebaseapp.com",
+  "firestoreDatabaseId": "(default)",
+  "storageBucket": "trivia-8ecc1.firebasestorage.app",
+  "messagingSenderId": "128897498885",
+  "measurementId": "G-K4XTC78LFQ"
 }
