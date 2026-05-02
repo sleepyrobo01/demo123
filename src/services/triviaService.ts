@@ -2,15 +2,12 @@ import { Question, UserPreferences } from '../types';
 import { generateBangladeshQuestions } from './aiService';
 
 export const CATEGORIES = [
-  { id: 17, name: 'Science' },
-  { id: 11, name: 'Entertainment' },
-  { id: 23, name: 'History' },
-  { id: 22, name: 'Geography' },
-  { id: 18, name: 'Technology' },
-  { id: 21, name: 'Sports' },
-  { id: 9, name: 'General Knowledge' },
-  { id: 27, name: 'Animals' },
-  { id: 20, name: 'Mythology' },
+  { id: 1, name: 'History & Liberation War' },
+  { id: 2, name: 'Geography & Nature' },
+  { id: 3, name: 'Culture & Arts' },
+  { id: 4, name: 'Sports' },
+  { id: 5, name: 'General Knowledge' },
+  { id: 6, name: 'Science & Technology' },
 ];
 
 export async function fetchDailyQuestions(preferences?: UserPreferences): Promise<Question[]> {
