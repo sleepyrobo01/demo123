@@ -13,18 +13,24 @@ export async function generateBangladeshQuestions(preferences?: UserPreferences)
   const difficulty = preferences?.difficulty || 'medium';
   const categories = preferences?.categories || [];
   
-  const prompt = `Generate 5 trivia questions specifically about Bangladesh.
-  Difficulty: ${difficulty === 'any' ? 'mixed' : difficulty}
-  ${categories.length > 0 ? `Try to include questions related to these category IDs if possible: ${categories.join(', ')} (where 9=General Knowledge, 17=Science, 11=Entertainment, 23=History, 22=Geography, 18=Technology, 21=Sports, 27=Animals, 20=Mythology).` : ''}
+  const prompt = `You are a trivia expert specializing in Bangladesh.
+  Generate exactly 5 high-quality, interesting trivia questions about Bangladesh.
   
-  Each question must be about Bangladesh's culture, history, geography, sports, or people.
-  
-  Return the response as a JSON array of objects with the following structure:
+  Difficulty Level: ${difficulty === 'any' ? 'balanced' : difficulty}
+
+  TOPIC FOCUS (strictly limited to Bangladesh):
+  - History (including the 1971 Liberation War and Language Movement)
+  - Geography (Rivers, Sundarbans, Cox's Bazar, regions)
+  - Culture & Heritage (Poetry, Music, Festivals, Art)
+  - Sports (Cricket, National games)
+  - General Knowledge (Constitution, National symbols, Famous personalities)
+
+  Return the response as a JSON array of objects:
   {
-    "question": "The question text",
+    "question": "The question text specifically about Bangladesh",
     "correctAnswer": "The single correct answer",
     "incorrectAnswers": ["Wrong 1", "Wrong 2", "Wrong 3"],
-    "category": "The category name (e.g. History, Geography)",
+    "category": "Appropriate category name",
     "difficulty": "${difficulty === 'any' ? 'medium' : difficulty}"
   }`;
 
