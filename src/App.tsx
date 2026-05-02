@@ -299,7 +299,7 @@ function LoginView() {
       await signInWithPopup(auth, googleProvider);
     } catch (error: any) {
       console.error('Google login error:', error);
-      setAuthError('Failed to sign in with Google. Please try again.');
+      setAuthError(`Failed to sign in with Google: ${error.code || error.message}. Check the Authorized Domains in Firebase Settings.`);
     } finally {
       setIsSubmitting(false);
     }
