@@ -530,9 +530,9 @@ function QuizView() {
       setSelectedAnswer(null);
       setIsCorrect(null);
       setGameState('playing');
-    } catch (error) {
+    } catch (error: any) {
       console.error(error);
-      alert('Could not load quiz. Please try again.');
+      alert(`Could not load quiz: ${error.message || 'Unknown error'}. Please check if your GEMINI_API_KEY is correctly set in Netlify site settings.`);
     } finally {
       setLoading(false);
     }
