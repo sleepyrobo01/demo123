@@ -10,7 +10,13 @@ if (firebaseConfig.apiKey === 'remixed-api-key') {
 
 const app = initializeApp(firebaseConfig);
 export const auth = getAuth(app);
-export const db = getFirestore(app, firebaseConfig.firestoreDatabaseId);
+
+// Use default database if the ID is a placeholder or missing
+const dbId = (!firebaseConfig.firestoreDatabaseId || firebaseConfig.firestoreDatabaseId.includes('remixed')) 
+  ? undefined 
+  : firebaseConfig.firestoreDatabaseId;
+
+export const db = getFirestore(app, dbId);
 export const googleProvider = new GoogleAuthProvider();
 
 export enum OperationType {
