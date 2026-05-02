@@ -1,0 +1,83 @@
+{
+  "entities": {
+    "User": {
+      "title": "User",
+      "description": "User profile and trivia statistics",
+      "type": "object",
+      "properties": {
+        "uid": { "type": "string", "description": "Firebase Auth UID" },
+        "displayName": { "type": "string" },
+        "email": { "type": "string", "format": "email" },
+        "photoURL": { "type": "string" },
+        "totalScore": { "type": "number", "description": "Cumulative score across all quizzes" },
+        "currentStreak": { "type": "number" },
+        "bestStreak": { "type": "number" },
+        "lastPlayedDate": { "type": "string", "description": "ISO date of last quiz attempt" },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["uid", "email"]
+    },
+    "Quiz": {
+      "title": "Daily Quiz",
+      "description": "The set of questions for a specific day",
+      "type": "object",
+      "properties": {
+        "date": { "type": "string", "description": "YYYY-MM-DD" },
+        "questions": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "question": { "type": "string" },
+              "correctAnswer": { "type": "string" },
+              "incorrectAnswers": { "type": "array", "items": { "type": "string" } },
+              "category": { "type": "string" },
+              "difficulty": { "type": "string" }
+            }
+          }
+        }
+      }
+    },
+    "Attempt": {
+      "title": "Quiz Attempt",
+      "description": "A user's attempt at a daily quiz",
+      "type": "object",
+      "properties": {
+        "userId": { "type": "string" },
+        "date": { "type": "string", "description": "YYYY-MM-DD" },
+        "score": { "type": "number" },
+        "completedAt": { "type": "string", "format": "date-time" }
+      }
+    },
+    "Profile": {
+      "title": "Public Profile",
+      "description": "Publicly visible user statistics",
+      "type": "object",
+      "properties": {
+        "uid": { "type": "string" },
+        "displayName": { "type": "string" },
+        "photoURL": { "type": "string" },
+        "totalScore": { "type": "number" },
+        "currentStreak": { "type": "number" }
+      }
+    }
+  },
+  "firestore": {
+    "/users/{userId}": {
+      "schema": "User",
+      "description": "Private user data"
+    },
+    "/profiles/{userId}": {
+      "schema": "Profile",
+      "description": "Public user profiles"
+    },
+    "/quizzes/{date}": {
+      "schema": "Quiz",
+      "description": "Daily question sets"
+    },
+    "/attempts/{attemptId}": {
+      "schema": "Attempt",
+      "description": "User quiz results"
+    }
+  }
+}

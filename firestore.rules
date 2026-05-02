@@ -1,0 +1,83 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // ===============================================================
+    // Assumed Data Model
+    // ===============================================================
+    // Collection: users
+    // Fields: uid, displayName, email, photoURL, totalScore, currentStreak, bestStreak, lastPlayedDate, createdAt
+    //
+    // Collection: quizzes
+    // Fields: date, questions[]
+    //
+    // Collection: attempts
+    // Fields: userId, date, score, completedAt
+    // ===============================================================
+
+    // Helper Functions
+    function isAuthenticated() {
+      return request.auth != null;
+    }
+
+    function isOwner(userId) {
+      return isAuthenticated() && request.auth.uid == userId;
+    }
+
+    function isValidUser(data) {
+      return data.keys().hasAll(['uid', 'email']) &&
+             data.uid is string &&
+             data.email is string &&
+             (!('totalScore' in data) || data.totalScore is number) &&
+             (!('currentStreak' in data) || data.currentStreak is number);
+    }
+
+    function isValidAttempt(data) {
+      return data.keys().hasAll(['userId', 'date', 'score', 'completedAt']) &&
+             data.userId == request.auth.uid &&
+             data.date is string &&
+             data.score is number &&
+             data.score >= 0 && data.score <= 5;
+    }
+
+    function isValidProfile(data) {
+      return data.keys().hasAll(['uid', 'displayName', 'photoURL', 'totalScore', 'currentStreak']) &&
+             data.uid == request.auth.uid &&
+             data.displayName is string &&
+             data.photoURL is string &&
+             data.totalScore is number &&
+             data.currentStreak is number;
+    }
+
+    function isValidQuiz(data) {
+      return data.keys().hasAll(['date', 'questions']) &&
+             data.date is string &&
+             data.questions is list &&
+             data.questions.size() == 5;
+    }
+
+    // Rules
+    match /users/{userId} {
+      allow read, write: if isOwner(userId);
+    }
+
+    match /profiles/{userId} {
+      allow read: if isAuthenticated();
+      allow write: if isOwner(userId);
+    }
+
+    match /quizzes/{date} {
+      allow read: if isAuthenticated();
+      allow create: if isAuthenticated();
+      allow update, delete: if false;
+    }
+
+    match /attempts/{attemptId} {
+      allow read: if isAuthenticated() && (resource == null || resource.data.userId == request.auth.uid);
+      allow create: if isAuthenticated() && request.resource.data.userId == request.auth.uid;
+      allow update, delete: if false;
+    }
+    
+    // Global leaderboard read (if we use a separate collection or query users)
+    // For now, users collection is readable by authenticated users.
+  }
+}
