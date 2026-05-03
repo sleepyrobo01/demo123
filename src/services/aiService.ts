@@ -37,7 +37,7 @@ export async function generateBangladeshQuestions(preferences?: UserPreferences)
 
   try {
     const response = await ai.getGenerativeModel({
-      model: "gemini-1.5-flash",
+      model: "gemini-2.5-flash",
       generationConfig: {
         responseMimeType: "application/json",
       }
