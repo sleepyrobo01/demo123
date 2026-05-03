@@ -1,10 +1,11 @@
 import { GoogleGenAI, Type } from "@google/genai";
 import { Question, UserPreferences } from "../types";
 
-const key = process.env.GEMINI_API_KEY;
+// Use VITE_ prefix for client-side environment variables in Vite/Netlify
+const key = import.meta.env.VITE_GEMINI_API_KEY || process.env.GEMINI_API_KEY;
 
 if (!key || key === 'MY_GEMINI_API_KEY') {
-  console.warn("⚠️ AI SERVICE WARNING: Gemini API Key is missing or using placeholder. Falling back to general trivia.");
+  console.warn("⚠️ AI SERVICE WARNING: Gemini API Key (VITE_GEMINI_API_KEY) is missing. Check your Netlify environment variables.");
 }
 
 const ai = new GoogleGenAI({ apiKey: key || '' });
@@ -39,27 +40,11 @@ export async function generateBangladeshQuestions(preferences?: UserPreferences)
       model: "gemini-1.5-flash",
       generationConfig: {
         responseMimeType: "application/json",
-        responseSchema: {
-          type: Type.ARRAY,
-          items: {
-            type: Type.OBJECT,
-            properties: {
-              question: { type: Type.STRING },
-              correctAnswer: { type: Type.STRING },
-              incorrectAnswers: {
-                type: Type.ARRAY,
-                items: { type: Type.STRING }
-              },
-              category: { type: Type.STRING },
-              difficulty: { type: Type.STRING }
-            },
-            required: ["question", "correctAnswer", "incorrectAnswers", "category", "difficulty"]
-          }
-        }
       }
     }).generateContent(prompt);
 
-    const questions = JSON.parse(response.response.text());
+    const text = response.response.text();
+    const questions = JSON.parse(text);
     return questions.map((q: any) => ({
       ...q,
       difficulty: q.difficulty.toLowerCase() as 'easy' | 'medium' | 'hard'
