@@ -921,7 +921,7 @@ function LeaderboardView() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const q = query(collection(db, 'profiles'), orderBy('totalScore', 'desc'), limit(10));
+    const q = query(collection(db, 'profiles'), orderBy('totalScore', 'desc'), limit(100));
     const unsubscribe = onSnapshot(q, (snapshot) => {
       const data = snapshot.docs.map(doc => doc.data());
       setLeaders(data);
