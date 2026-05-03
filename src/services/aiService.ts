@@ -20,11 +20,11 @@ export async function generateBangladeshQuestions(preferences?: UserPreferences)
   Difficulty Level: ${difficulty === 'any' ? 'balanced' : difficulty}
 
   TOPIC FOCUS (strictly limited to Bangladesh):
-  - History (including the 1971 Liberation War and Language Movement)
-  - Geography (Rivers, Sundarbans, Cox's Bazar, regions)
-  - Culture & Heritage (Poetry, Music, Festivals, Art)
-  - Sports (Cricket, National games)
-  - General Knowledge (Constitution, National symbols, Famous personalities)
+  - Bangladesh History (including the 1971 Liberation War and Language Movement)
+  - Bangladesh Geography (Rivers, Sundarbans, Cox's Bazar, regions)
+  - Bangladesh Culture & Heritage (Poetry, Music, Festivals, Art)
+  - Bangladesh Sports (Cricket, National games)
+  - Bangladesh General Knowledge (Constitution, National symbols, Famous personalities)
 
   Return the response as a JSON array of objects:
   {
